@@ -91,18 +91,24 @@ program knox.aleo {
     
     ====================================================================================================================  
     */
-    // async transition mint_private(
-    //     private recipient: address, 
-    //     private amount: u64
-    // ) -> (Token,Future) {
-    //     // TODO: Fill in here
+    async transition mint_private(
+        private recipient: address, 
+        private amount: u64
+    ) -> (Token,Future) {
+        // TODO: Fill in here
+        let address_check: Future = workshop_ofac.aleo/address_check(recipient);
+        let token: Token = Token {
+            owner: recipient,
+            amount: amount,
+        }
 
-    // }
-    // async function mint_private_onchain(
-    //     address_check : Future
-    // ){
-    //     // TODO: Fill in here
-    // }
+    }
+    async function mint_private_onchain(
+        address_check : Future
+    ){
+        // TODO: Fill in here
+        address_check.await();
+    }
 
 
 
