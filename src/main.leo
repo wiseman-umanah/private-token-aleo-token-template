@@ -102,7 +102,7 @@ program knox.aleo {
             amount: amount,
         };
 
-        return (token, mint_private_onchain((address_check)));
+        return (token, mint_private_onchain(address_check));
 
     }
     async function mint_private_onchain(
@@ -136,20 +136,31 @@ program knox.aleo {
     
     ====================================================================================================================  
     */
-    // async transition transfer_public(
-    //     public recipient: address, 
-    //     public amount: u64
-    // ) -> Future {
-    //     // TODO: Fill in here
-    // }
-    // async function transfer_public_onchain(
-    //     public sender: address, 
-    //     public recipient: address, 
-    //     public amount: u64,
-    //     public address_check : Future
-    // ) {
-    //     // TODO: Fill in here
-    // }
+    async transition transfer_public(
+        public recipient: address, 
+        public amount: u64
+    ) -> Future {
+        // TODO: Fill in here
+        let address_check: Future = workshop_ofac.aleo/address_check(recipient);
+
+        return transfer_public_onchain(self.signer, recipient, amount, address_check);
+    }
+
+    async function transfer_public_onchain(
+        public sender: address, 
+        public recipient: address, 
+        public amount: u64,
+        public address_check : Future
+    ) {
+        // TODO: Fill in here
+        address_check.await();
+
+        let sender_amount: u64 = Mapping::get_or_use(balances, sender, 0u64);
+        Mapping::set(balances, sender, sender_amount - amount);
+
+        let receiver_amount: u64 = Mapping::get_or_use(balances, recipient, 0u64);
+        Mapping::set(balances, recipient, receiver_amount + amount);
+    }
 
 
 
@@ -176,19 +187,35 @@ program knox.aleo {
     
     ====================================================================================================================  
     */
-    // async transition transfer_private(
-    //     private sender: Token, 
-    //     private recipient: address, 
-    //     private amount: u64
-    // ) -> (Token, Token, Future) {
-    //     // TODO: Fill in here
-    // }
+    async transition transfer_private(
+        private sender: Token, 
+        private recipient: address, 
+        private amount: u64
+    ) -> (Token, Token, Future) {
+        // TODO: Fill in here
+        let address_check: Future = workshop_ofac.aleo/address_check(recipient);
 
-    // async function transfer_private_onchain(
-    //     public address_check : Future
-    // ){
-    //     // TODO: Fill in here
-    // }
+        let difference: u64 = sender.ammount - amount;
+
+        let remaining: Token = Token {
+            owner: sender.owner,
+            amount: difference
+        };
+
+        let transferred: Token = Token {
+            owner: recipient,
+            amount: amount,
+        };
+
+        return (remaining, transferred, transfer_private_onchain(address_check));
+    }
+
+    async function transfer_private_onchain(
+        public address_check : Future
+    ){
+        // TODO: Fill in here
+        address_check.await();
+    }
 
 
 
