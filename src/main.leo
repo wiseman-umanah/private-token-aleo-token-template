@@ -195,7 +195,7 @@ program knox.aleo {
         // TODO: Fill in here
         let address_check: Future = workshop_ofac.aleo/address_check(recipient);
 
-        let difference: u64 = sender.ammount - amount;
+        let difference: u64 = sender.amount - amount;
 
         let remaining: Token = Token {
             owner: sender.owner,
