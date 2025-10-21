@@ -47,6 +47,7 @@ program knox.aleo {
     
     ====================================================================================================================  
     */
+
     async transition mint_public(
         public recipient: address, 
         public amount: u64
@@ -54,7 +55,7 @@ program knox.aleo {
         let address_check : Future = workshop_ofac.aleo/address_check(recipient);
 
         // TODO: Fill in here
-        return (recipient, amount, address_check);
+        return mint_public_onchain(recipient, amount, address_check);
     }
 
     async function mint_public_onchain(
