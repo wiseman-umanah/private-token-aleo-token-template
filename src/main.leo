@@ -14,7 +14,7 @@ TODO:
 
 ====================================================================================================================  
 */
-program token.aleo {
+program knox.aleo {
     mapping balances: address => u64;  // On-chain mapping between user addresses and public token balances
 
     record Token {
@@ -54,6 +54,7 @@ program token.aleo {
         let address_check : Future = workshop_ofac.aleo/address_check(recipient);
 
         // TODO: Fill in here
+        return (recipient, amount, address_check);
     }
 
     async function mint_public_onchain(
@@ -64,6 +65,8 @@ program token.aleo {
         address_check.await();
 
         // TODO: Fill in here
+        let current_amount: u64 = Mapping::get_or_use(balances, recipient, 0u64 );
+        Mapping::set(balances, recipient, current_amount + amount);
     }
 
 
