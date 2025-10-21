@@ -100,7 +100,9 @@ program knox.aleo {
         let token: Token = Token {
             owner: recipient,
             amount: amount,
-        }
+        };
+
+        return (token, mint_private_onchain((address_check)));
 
     }
     async function mint_private_onchain(
