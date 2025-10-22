@@ -1,154 +1,139 @@
-# 🚀 Aleo Private Token Deployment
+# ALEO Private Token — Compliant Private Tokens Workshop (Uyo, Nigeria)
 
-This project demonstrates the process of **deploying a private token smart contract on the Aleo blockchain**, using the [Private Token Workshop Template](https://github.com/AleoAlexander/private-token-workshop-token-template).  
+## Overview
 
-It covers all key steps — from cloning the repo and modifying mint functions to deploying and verifying the contract on Aleo’s testnet.
+**Aleo Private Token** was developed as part of a hands-on learning exercise focused on building and deploying **privacy-preserving fungible tokens** on the **Aleo blockchain**.  
+The project demonstrates how to implement both **public** and **private minting** functions, test them using the **Aleo Playground CLI**, and deploy the final contract securely to the **Aleo Testnet**.
 
----
-
-## 📘 Overview
-
-Aleo is a **privacy-focused blockchain** that allows developers to build zero-knowledge applications using **Leo**, its high-level programming language.  
-
-This project shows how to:
-- Clone and set up a Leo project
-- Implement private and public mint functionality
-- Test the contract locally using the Leo Playground CLI
-- Deploy it to Aleo testnet using personal credentials
-- Verify and interact with the deployed contract on-chain
+The token combines **public transparency** with **private confidentiality**, integrating an external compliance layer via the `workshop_ofac.aleo` module. Through this implementation, participants learn how to construct a real-world, regulation-aware digital asset system that balances privacy with accountability.
 
 ---
 
-## 🧱 Project Repository
+## Purpose
 
-Template used:  
-👉 [AleoAlexander/private-token-workshop-token-template](https://github.com/AleoAlexander/private-token-workshop-token-template)
+The **Compliant Private Tokens Workshop** was designed to teach Aleo developers in Uyo how to:
+
+* Build compliant token programs using **Aleo**.
+* Understand the dual architecture of **public mappings** and **private records**.
+* Integrate **OFAC-style compliance checks** for every transaction.
+* Apply **zero-knowledge proofs** to secure and verify token operations.
+
+**ALEO Token** serves as a reference project for developers to grasp both conceptual and technical aspects of tokenization under Aleo’s privacy model.
 
 ---
 
-## ⚙️ Project Setup
+## Core Principles
 
-### 1. Clone the Repository
+### 1. **Public Ledger Operations**
+
+Public functions operate transparently, modifying a shared on-chain mapping of balances. Each address and its corresponding balance are visible on-chain, ensuring accountability where required.
+All public operations:
+
+* Enforce compliance before modifying state.
+* Use `Mapping::get_or_use` and `Mapping::set` to handle balances securely.
+
+**Examples:**
+
+* `mint_public`: Adds tokens to a recipient’s balance after successful compliance verification.
+* `transfer_public`: Moves tokens between visible balances, maintaining auditability.
+
+---
+
+### 2. **Private Record Operations**
+
+Private functions use **Aleo’s record system**, allowing token transfers and ownership changes to remain confidential.
+Each token record has the structure:
+
+```aleo
+record Token {
+    owner: address,
+    amount: u64
+}
+```
+
+Records are consumed and recreated atomically, ensuring correctness without revealing participant identities or balances.
+
+**Examples:**
+
+* `mint_private`: Issues tokens as a new, encrypted record for the recipient.
+* `transfer_private`: Transfers tokens privately, producing new records for both sender and recipient.
+
+---
+
+### 3. **Integrated Compliance Layer**
+
+All operations interface with:
+
+```aleo
+workshop_ofac.aleo/address_check(address)
+```
+
+This ensures that every token interaction — mint or transfer — is preceded by a compliance check against restricted addresses. The process uses Aleo’s asynchronous `Future` mechanism, requiring the check to **complete before** any state or record update occurs.
+
+This implementation models how **regulatory compliance can be encoded directly into decentralized systems** using Aleo’s async architecture.
+
+---
+
+## Functional Overview
+
+| Function           | Visibility | Description                                                                     |
+| ------------------ | ---------- | ------------------------------------------------------------------------------- |
+| `mint_public`      | Public     | Mints tokens by increasing the recipient’s balance after compliance validation. |
+| `mint_private`     | Private    | Issues a new token record privately to the recipient.                           |
+| `transfer_public`  | Public     | Transfers visible balances between two addresses.                               |
+| `transfer_private` | Private    | Privately transfers value using record consumption and regeneration.            |
+
+---
+
+## Learning Objectives
+
+By completing the **ALEO Token** project, workshop participants learned to:
+
+1. Define and use **mappings** and **records** in Aleo programs.
+2. Write **async functions** that coordinate external compliance checks.
+3. Manage both **public and private** state transitions securely.
+4. Implement **regulatory enforcement** using external Aleo modules.
+5. Design systems that merge **transparency and privacy** effectively.
+
+---
+
+## Deployment Details
+
+* **Program Name:** `wisemanumanah.aleo`
+* **Workshop:** Compliant Private Tokens (Uyo, Nigeria)
+* **Dependency:** `workshop_ofac.aleo`
+* **Platform:** Aleo Testnet
+* **Tools:** Aleo CLI
+* **Deployment id** at19gfze50aue9e5qxw7qx6vh60k5h80ssxt2ptjmaq7ru4tcz2r5gqedsgsj
+
+**Build and Deploy Commands:**
 
 ```bash
-git clone https://github.com/AleoAlexander/private-token-workshop-token-template
-cd private-token-workshop-token-template
-This repository contains a base token implementation written in Leo, designed to demonstrate private and public minting mechanisms.
+leo build
+leo deploy
+```
 
-✏️ Step 2: Complete the Mint Functionality
-Inside the contract, you’ll find mint_private and mint_public functions.
-You must complete the logic for both minting types — ensuring that:
+**Run Examples:**
 
-Private minting securely issues tokens without revealing user balances.
+```bash
+leo run mint_public recipient_address 100u64
+leo run transfer_public recipient_address 50u64
+leo run mint_private recipient_address 100u64
+leo run transfer_private sender_record recipient_address 50u64
+```
 
-Public minting allows visible mint transactions on the Aleo blockchain.
+---
 
-Example snippet (pseudo-logic):
+## Educational Value
 
-rust
-Copy code
-function mint_private(recipient: address, amount: u64) {
-    // logic to mint private tokens
-    // store minted notes securely under recipient’s address
-}
+This project was the **practical component** of the Compliant Private Tokens Workshop in Uyo, aimed at bridging Aleo theory and applied zero-knowledge programming. It provided participants with hands-on experience in:
 
-function mint_public(recipient: address, amount: u64) {
-    // logic to mint tokens publicly visible on-chain
-}
-Once done, you can test the contract locally before deployment.
+* Building privacy-first smart contracts.
+* Enforcing compliance within cryptographic systems.
+* Structuring token logic for both regulated and confidential use cases.
 
-🧪 Step 3: Test the Contract (Playground CLI)
-You can test functions directly via the Leo Playground or your local CLI.
+---
 
-Example test command:
+## Summary
 
-bash
-Copy code
-leo run mint_public aleo1recipientaddress 100u64
-Or for a private mint:
-
-bash
-Copy code
-leo run mint_private aleo1recipientaddress 50u64
-Each run simulates execution on Aleo’s virtual machine, allowing you to verify function logic, parameters, and resulting state changes.
-
-🚀 Step 4: Deploying the Contract
-Once testing is successful, deploy the contract using your private key, network, and endpoint.
-
-Create an .env file (see .env.example below):
-
-bash
-Copy code
-NETWORK=testnet
-PRIVATE_KEY=APrivateKey1zkp87nXowvCUBJ8jZsciBDocGPQZngBq764iPbyoGtL14tx
-ENDPOINT=https://api.explorer.provable.com/v1
-Deploy command:
-bash
-Copy code
-leo deploy <program_name> --network $NETWORK --private-key $PRIVATE_KEY --endpoint $ENDPOINT
-Your contract will be published to the Aleo testnet.
-
-✅ Deployed Program ID:
-at19gfze50aue9e5qxw7qx6vh60k5h80ssxt2ptjmaq7ru4tcz2r5gqedsgsj
-
-You can verify your deployment on the Aleo Explorer.
-
-🔍 Step 5: Verify and Execute On-Chain
-After deployment, interact with your live contract to ensure all functions are working.
-
-Example execution command:
-
-bash
-Copy code
-leo execute <program_name>.mint_public aleo1recipientaddress 100u64 \
---network $NETWORK --private-key $PRIVATE_KEY --endpoint $ENDPOINT
-You can then check your transaction and program state using:
-
-Explorer:
-🔗 Aleo Blockchain Explorer
-
-Enter your program ID to view transactions and state changes.
-
-💧 Step 6: Request Testnet Tokens (Aleo Credits)
-Before deploying or executing, you’ll need testnet tokens for gas fees.
-
-Request them from either of these faucets:
-
-Official Aleo Faucet
-
-Puzzle Faucet
-
-🧾 .env Example
-bash
-Copy code
-# Environment Variables
-NETWORK=testnet
-PRIVATE_KEY=APrivateKey1zkp87nXowvCUBJ8jZsciBDocGPQZngBq764iPbyoGtL14tx
-ENDPOINT=https://api.explorer.provable.com/v1
-🔗 Useful Links
-Resource	URL
-Aleo Playground	https://play.leo-lang.org/
-Faucet 1	https://faucet.aleo.org/
-Faucet 2	https://dev.puzzle.online/faucet
-Explorer	https://explorer.provable.com/
-Template Repo	https://github.com/AleoAlexander/private-token-workshop-token-template
-
-🧠 Summary
-By following these steps, you successfully:
-
-Cloned and customized the Aleo private token template.
-
-Implemented both private and public mint functions.
-
-Tested the contract logic using the Leo Playground CLI.
-
-Deployed the contract using personal Aleo credentials.
-
-Verified and interacted with the deployed program on-chain.
-
-This process highlights the end-to-end lifecycle of building privacy-preserving smart contracts on Aleo — from development and local testing to live deployment.
-
-👨‍💻 Author
-Wiseman Umanah
-Deployed Private Token on Aleo Testnet
-Program ID: at19gfze50aue9e5qxw7qx6vh60k5h80ssxt2ptjmaq7ru4tcz2r5gqedsgsj
+**ALEO Token** embodies the central theme of the **Compliant Private Tokens Workshop (Uyo, Nigeria)** — that privacy and compliance can coexist within decentralized systems. It serves as an archetype for developing compliant, privacy-preserving token infrastructures on Aleo, illustrating how to balance **user confidentiality**, **regulatory transparency**, and **technical integrity** in one coherent zero-knowledge design.
