@@ -104,7 +104,7 @@ By completing the **ALEO Token** project, workshop participants learned to:
 * **Dependency:** `workshop_ofac.aleo`
 * **Platform:** Aleo Testnet
 * **Tools:** Aleo CLI
-* **Deployment id** at19gfze50aue9e5qxw7qx6vh60k5h80ssxt2ptjmaq7ru4tcz2r5gqedsgsj
+* **Deployment id** `at19gfze50aue9e5qxw7qx6vh60k5h80ssxt2ptjmaq7ru4tcz2r5gqedsgsj`
 
 **Build and Deploy Commands:**
 
