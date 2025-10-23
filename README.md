@@ -76,12 +76,12 @@ This implementation models how **regulatory compliance can be encoded directly i
 
 ## Functional Overview
 
-| Function           | Visibility | Description                                                                     |
-| ------------------ | ---------- | ------------------------------------------------------------------------------- |
-| `mint_public`      | Public     | Mints tokens by increasing the recipient’s balance after compliance validation. |
-| `mint_private`     | Private    | Issues a new token record privately to the recipient.                           |
-| `transfer_public`  | Public     | Transfers visible balances between two addresses.                               |
-| `transfer_private` | Private    | Privately transfers value using record consumption and regeneration.            |
+| Function           | Visibility | Description                                                                     | Execution IDs                                                 |
+| ------------------ | ---------- | ------------------------------------------------------------------------------- |----------------------------------------------------------------
+| `mint_public`      | Public     | Mints tokens by increasing the recipient’s balance after compliance validation. | at12p0h8fy5ajc3zjh5m5ls6g08muv3r0w2n25puq6jp3dpnnuse5rsr9qymv |
+| `mint_private`     | Private    | Issues a new token record privately to the recipient.                           | at1dhg2tat7z6fp08c8hgdy7ce0qxysm5avjvvsstglv9n4txesvq8sm5pkmz |
+| `transfer_public`  | Public     | Transfers visible balances between two addresses.                               | at1s7prjy80ylruxz5twek474sf4hsl2yk8pnnevzlnprywxtglm5rqcmq5xp |
+| `transfer_private` | Private    | Privately transfers value using record consumption and regeneration.            | at15emsdvd3cjzdqcqh6ncmzm2prap9w3rss3nzxvt6jku3gqpyt5ysjnmc6h |
 
 ---
 
