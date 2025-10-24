@@ -1,5 +1,5 @@
 {
-  "program": "knox.aleo",
+  "program": "wisemanumanah.aleo",
   "version": "0.1.0",
   "description": "",
   "license": "MIT",
@@ -13,3 +13,4 @@
   ],
   "dev_dependencies": null
 }
+

@@ -14,7 +14,7 @@ TODO:
 
 ====================================================================================================================  
 */
-program knox.aleo {
+program wisemanumanah.aleo {
     mapping balances: address => u64;  // On-chain mapping between user addresses and public token balances
 
     record Token {
